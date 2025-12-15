@@ -1,7 +1,9 @@
 import { cubicBezier } from "./bezier.js";
+import { mouseTracker } from "./input.js";
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+const mouse = mouseTracker(canvas);
 
 function resize() {
   canvas.width = window.innerWidth;
@@ -29,4 +31,21 @@ function draw() {
   ctx.stroke();
 }
 
-draw();
+// Make the control points follow the mouse around
+// This gives us that smooth, stretchy effect on the curve
+function updateControlPoints() {
+  p1.x = p0.x + (mouse.x - p0.x) * 0.4;
+  p1.y = mouse.y;
+
+  p2.x = p3.x + (mouse.x - p3.x) * 0.4;
+  p2.y = mouse.y;
+}
+
+// Keep everything running smoothly
+function frame() {
+  updateControlPoints();
+  draw();
+  requestAnimationFrame(frame);
+}
+
+frame();
