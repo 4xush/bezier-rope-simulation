@@ -1,6 +1,7 @@
 import { cubicBezier, cubicBezierTangent } from "./bezier.js";
 import { mouseTracker } from "./input.js";
 import { createPoint, updateSpring } from "./spring.js";
+import { drawGrid } from "./grid.js";
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -11,8 +12,8 @@ let p3 = { x: 0, y: 0 };
 let p1 = createPoint(0, 0);
 let p2 = createPoint(0, 0);
 
-const stiffness = 0.06;  // Lower = slower, smoother reaction
-const damping = 0.12;    // Lower = more fluid movement
+const stiffness = 0.05;  // Lower = slower, smoother reaction
+const damping = 0.2;    // Lower = more fluid movement
 
 // FPS tracking
 let lastFrameTime = performance.now();
@@ -46,18 +47,25 @@ function resize() {
 window.addEventListener("resize", resize);
 resize();
 
-function draw() {
+function draw(time) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw animated grid first (background layer)
+  drawGrid(ctx, canvas, time);
+
+  // Draw curve on top
   ctx.strokeStyle = "#ffffff";
   ctx.lineWidth = 4;
   ctx.lineCap = "round";
 
   ctx.beginPath();
-  for (let t = 0; t <= 1; t += 0.02) {
+  for (let t = 0; t <= 1; t += 0.01) {  // Smaller step for smoother curve
     const pt = cubicBezier(t, p0, p1, p2, p3);
     if (t === 0) ctx.moveTo(pt.x, pt.y);
     else ctx.lineTo(pt.x, pt.y);
   }
+  // Ensure we end exactly at p3
+  ctx.lineTo(p3.x, p3.y);
   ctx.stroke();
 }
 
@@ -156,7 +164,7 @@ function frame() {
   updateControlTargets();
   updateSpring(p1, stiffness, damping);
   updateSpring(p2, stiffness, damping);
-  draw();
+  draw(currentTime);
   drawTangents();
   drawControlPoints();
   drawFPS();
