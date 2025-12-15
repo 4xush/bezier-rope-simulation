@@ -1,5 +1,6 @@
 import { cubicBezier } from "./bezier.js";
 import { mouseTracker } from "./input.js";
+import { createPoint, updateSpring } from "./spring.js";
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -14,8 +15,11 @@ resize();
 
 const p0 = { x: 80, y: canvas.height / 2 };
 const p3 = { x: canvas.width - 80, y: canvas.height / 2 };
-const p1 = { x: canvas.width * 0.3, y: canvas.height * 0.3 };
-const p2 = { x: canvas.width * 0.7, y: canvas.height * 0.7 };
+const p1 = createPoint(canvas.width * 0.3, canvas.height * 0.3);
+const p2 = createPoint(canvas.width * 0.7, canvas.height * 0.7);
+
+const stiffness = 0.08;
+const damping = 0.15;
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -31,19 +35,21 @@ function draw() {
   ctx.stroke();
 }
 
-// Make the control points follow the mouse around
-// This gives us that smooth, stretchy effect on the curve
-function updateControlPoints() {
-  p1.x = p0.x + (mouse.x - p0.x) * 0.4;
-  p1.y = mouse.y;
+// Set where we want the control points to go based on mouse position
+// The spring physics will handle the smooth bouncy movement
+function updateControlTargets() {
+  p1.tx = p0.x + (mouse.x - p0.x) * 0.4;
+  p1.ty = mouse.y;
 
-  p2.x = p3.x + (mouse.x - p3.x) * 0.4;
-  p2.y = mouse.y;
+  p2.tx = p3.x + (mouse.x - p3.x) * 0.4;
+  p2.ty = mouse.y;
 }
 
-// Keep everything running smoothly
+// Animation loop with springy physics
 function frame() {
-  updateControlPoints();
+  updateControlTargets();
+  updateSpring(p1, stiffness, damping);
+  updateSpring(p2, stiffness, damping);
   draw();
   requestAnimationFrame(frame);
 }
