@@ -1,6 +1,6 @@
 // Draw grid with turbulent displacement
 export function drawGrid(ctx, canvas, time) {
-    const gridSize = 50;
+    const gridSize = 60;
     ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
     ctx.lineWidth = 1;
 

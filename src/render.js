@@ -34,12 +34,12 @@ function resize() {
   const isFirstRun = p1.x === 0 && p1.y === 0;
   if (isFirstRun) {
     p1.x = canvas.width * 0.3;
-    p1.y = canvas.height * 0.3;
+    p1.y = canvas.height / 2;  // Same Y as endpoints for straight line
     p1.tx = p1.x;
     p1.ty = p1.y;
 
     p2.x = canvas.width * 0.7;
-    p2.y = canvas.height * 0.7;
+    p2.y = canvas.height / 2;  // Same Y as endpoints for straight line
     p2.tx = p2.x;
     p2.ty = p2.y;
   }
@@ -141,6 +141,15 @@ function drawFPS() {
 
 // Set target positions based on mouse
 function updateControlTargets() {
+  // If mouse hasn't moved yet, keep the rope straight
+  if (!mouse.hasMoved) {
+    p1.tx = canvas.width * 0.3;
+    p1.ty = canvas.height / 2;
+    p2.tx = canvas.width * 0.7;
+    p2.ty = canvas.height / 2;
+    return;
+  }
+
   p1.tx = p0.x + (mouse.x - p0.x) * 0.4;
   p1.ty = mouse.y;
 
