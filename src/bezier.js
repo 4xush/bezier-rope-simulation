@@ -1,3 +1,4 @@
+//given formula
 // B(t) = (1−t)³·P0 + 3(1−t)²t·P1 + 3(1−t)t²·P2 + t³·P3
 export function cubicBezier(t, p0, p1, p2, p3) {
   const u = 1 - t;
@@ -12,7 +13,8 @@ export function cubicBezier(t, p0, p1, p2, p3) {
   };
 }
 
-// Get the direction (tangent) at any point on the curve
+// Get the tangent at any point on the curve with derivative of cubic Bezier
+// B'(t) = 3(1−t)²(P1−P0) + 6(1−t)t(P2−P1) + 3t²(P3−P2)
 export function cubicBezierTangent(t, p0, p1, p2, p3) {
   const u = 1 - t;
 

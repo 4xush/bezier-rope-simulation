@@ -4,7 +4,7 @@ export function drawGrid(ctx, canvas, time) {
     ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
     ctx.lineWidth = 1;
 
-    // Vertical lines with turbulence
+    // Vertical lines 
     for (let x = 0; x < canvas.width; x += gridSize) {
         ctx.beginPath();
         for (let y = 0; y < canvas.height; y += 10) {
@@ -19,11 +19,10 @@ export function drawGrid(ctx, canvas, time) {
         ctx.stroke();
     }
 
-    // Horizontal lines with turbulence
+    // Horizontal lines 
     for (let y = 0; y < canvas.height; y += gridSize) {
         ctx.beginPath();
         for (let x = 0; x < canvas.width; x += 10) {
-            // Add subtle wave displacement
             const displacement = Math.sin(x * 0.01 + time * 0.001) * 3 +
                 Math.cos(x * 0.02 + time * 0.0015) * 2;
             const offsetY = y + displacement;

@@ -30,16 +30,15 @@ function resize() {
   p3.x = canvas.width - 80;
   p3.y = canvas.height / 2;
 
-  // Initialize control points on first run
   const isFirstRun = p1.x === 0 && p1.y === 0;
   if (isFirstRun) {
     p1.x = canvas.width * 0.3;
-    p1.y = canvas.height / 2;  // Same Y as endpoints for straight line
+    p1.y = canvas.height / 2;  
     p1.tx = p1.x;
     p1.ty = p1.y;
 
     p2.x = canvas.width * 0.7;
-    p2.y = canvas.height / 2;  // Same Y as endpoints for straight line
+    p2.y = canvas.height / 2;
     p2.tx = p2.x;
     p2.ty = p2.y;
   }
@@ -50,21 +49,19 @@ resize();
 function draw(time) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Draw animated grid first (background layer)
+  // Background layer
   drawGrid(ctx, canvas, time);
 
-  // Draw curve on top
   ctx.strokeStyle = "#ffffff";
   ctx.lineWidth = 4;
   ctx.lineCap = "round";
 
   ctx.beginPath();
-  for (let t = 0; t <= 1; t += 0.01) {  // Smaller step for smoother curve
+  for (let t = 0; t <= 1; t += 0.01) {  
     const pt = cubicBezier(t, p0, p1, p2, p3);
     if (t === 0) ctx.moveTo(pt.x, pt.y);
     else ctx.lineTo(pt.x, pt.y);
   }
-  // Ensure we end exactly at p3
   ctx.lineTo(p3.x, p3.y);
   ctx.stroke();
 }
@@ -107,7 +104,6 @@ function drawTangents() {
 }
 
 function drawControlPoints() {
-  // Moving points
   ctx.fillStyle = "#ff4444";
   ctx.beginPath();
   ctx.arc(p1.x, p1.y, 6, 0, Math.PI * 2);
@@ -116,7 +112,6 @@ function drawControlPoints() {
   ctx.arc(p2.x, p2.y, 6, 0, Math.PI * 2);
   ctx.fill();
 
-  // Fixed points
   ctx.fillStyle = "#888888";
   ctx.beginPath();
   ctx.arc(p0.x, p0.y, 6, 0, Math.PI * 2);
@@ -139,7 +134,6 @@ function drawFPS() {
   ctx.fillText(`FPS: ${Math.round(fps)}`, 10, 20);
 }
 
-// Set target positions based on mouse
 function updateControlTargets() {
   // If mouse hasn't moved yet, keep the rope straight
   if (!mouse.hasMoved) {

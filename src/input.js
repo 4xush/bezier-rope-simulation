@@ -1,4 +1,4 @@
-// Track mouse/touch position on the canvas
+// Track mouse position on the canvas
 export function mouseTracker(canvas) {
   const pos = { x: 0, y: 0, hasMoved: false };
 

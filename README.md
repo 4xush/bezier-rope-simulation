@@ -16,6 +16,16 @@ A rope-like interactive curve that responds to mouse movement with smooth spring
 
 ## Math
 
+### Concept: The "Hands on a Rope" Analogy
+
+Imagine P₀ and P₃ are nails fixing the rope to a wall. P₁ and P₂ are "hands" pulling the rope.
+
+- **Move only P₁:** The start of the rope bends.
+- **Move only P₂:** The end of the rope bends.
+- **Move both:** The whole rope swings.
+
+_Note: In this simulation, the mouse acts as a magnet pulling both "hands" (P₁ and P₂) simultaneously, creating a smooth, unified swing._
+
 ### Cubic Bézier Curve
 
 The curve uses the standard cubic Bézier formula:
